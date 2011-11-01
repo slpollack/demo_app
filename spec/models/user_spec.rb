@@ -18,7 +18,7 @@ describe User do
 		:name=> "Example User", 
 		:email=> "user@example.com",
 		:password => "foobar",
-		:password_confirmation" => "foobar"
+		:password_confirmation => "foobar"
 	}
   end
   
@@ -59,6 +59,7 @@ describe User do
     user_with_duplicate_email = User.new(@attr)
     user_with_duplicate_email.should_not be_valid
   end
+  
   it "should reject email addresses identical up to case" do
     upcased_email = @attr[:email].upcase
     User.create!(@attr.merge(:email => upcased_email))
@@ -89,4 +90,30 @@ describe User do
 		User.new(hash).should_not be_valid
 	  end
 	end	
+
+  describe "password encryption" do
+
+    before(:each) do
+	  @user = User.create!(@attr)
+	end
+	
+	it "should have an encrypted password attribute" do
+	  @user.should respond_to(:encrypted_password)
+	end
+    it "should set the encrypted password" do
+	  @user.encrypted_password.should_not be_blank
+	end
+ 
+     describe "has_password? method" do
+	 
+	  it "should be true if the passwords match" do
+	    @user.has_password?(@attr[:password]).should be_true
+	  end
+	  
+	  it "should be false if the passwords don't match" do
+	    @user.has_password?("invalid").should be_false
+	  end
+	 end 
+  end
+	
 end
