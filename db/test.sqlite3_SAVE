@@ -1,0 +1,11 @@
+BEGIN TRANSACTION;
+CREATE TABLE "microposts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" varchar(255), "user_id" integer, "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL);
+INSERT INTO schema_migrations VALUES(20111101171937);
+INSERT INTO schema_migrations VALUES(20111031230512);
+INSERT INTO schema_migrations VALUES(20111101012401);
+INSERT INTO schema_migrations VALUES(20111101164511);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "email" varchar(255), "created_at" datetime, "updated_at" datetime, "encrypted_password" varchar(255), "salt" varchar(255));
+CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version");
+COMMIT;
